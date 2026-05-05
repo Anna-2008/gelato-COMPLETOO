@@ -1,20 +1,20 @@
 {
     "name": "Gelato Bacio Di Latte",
     "short_name": "Gelato",
-    "start_url": ".",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#A48A66",
     "description": "Cardápio digital Gelato Bacio Di Latte",
     "icons": [
         {
-            "src": "./images/logo64.png",
+            "src": "./assets/images/logo.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "./images/logo512.png",
+            "src": "./assets/images/logo.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
