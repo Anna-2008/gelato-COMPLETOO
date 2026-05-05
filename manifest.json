@@ -8,13 +8,13 @@
     "description": "Cardápio digital Gelato Bacio Di Latte",
     "icons": [
         {
-            "src": "./assets/images/logo.png",
-            "sizes": "192x192",
+            "src": "./images/logo512.png",
+            "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "./assets/images/logo.png",
+            "src": "./images/logo512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
