@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bacio di Latte - Gelato Artesanal</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            elegante: ["Cormorant Garamond", "serif"]
+          },
+          colors: {
+            cream: "#F3EDE4",
+            softbeige: "#E6D8C7",
+            caramel: "#C49A6C",
+            coffee: "#8B5E3C",
+            darkcoffee: "#3E2A1F"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="font-elegante bg-cream text-darkcoffee">
+
+  <header class="flex justify-between items-center px-6 py-4 md:px-16 bg-softbeige shadow-sm">
+
+    <img src="/img/logo.webp" class="w-32 md:w-40">
+
+    <button id="menu-btn" class="md:hidden flex flex-col gap-1">
+      <span class="linha w-6 h-0.5 bg-coffee transition-all"></span>
+      <span class="linha w-6 h-0.5 bg-coffee transition-all"></span>
+      <span class="linha w-6 h-0.5 bg-coffee transition-all"></span>
+    </button>
+
+    <nav id="menu"
+      class="hidden absolute top-20 left-0 w-full bg-softbeige text-center shadow-md md:static md:block md:w-auto md:shadow-none z-50">
+      <ul class="flex flex-col md:flex-row gap-6 p-6 md:p-0 text-lg">
+        <li><a href="#cardapio" class="hover:text-caramel transition">Sabores</a></li>
+        <li><a href="#footer" class="hover:text-caramel transition">Sobre</a></li>
+        <li><a href="#whatsApp" class="hover:text-caramel transition">Contato</a></li>
+      </ul>
+    </nav>
+
+  </header>
+
+  <main>
+
+    <section class="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-20">
+      <div class="md:w-1/2 text-center md:text-left">
+        <h1 class="text-5xl md:text-7xl font-semibold mb-6 text-coffee leading-tight">
+          Gelato Artesanal Italiano
+        </h1>
+        <a href="#cardapio"
+          class="inline-block bg-caramel text-white px-10 py-3 rounded-full hover:bg-coffee transition shadow-md text-lg">
+          Descubra os Sabores
+        </a>
+      </div>
+      <div class="md:w-1/2 mt-10 md:mt-0">
+        <img src="/img/banner.webp" class="w-full max-w-md mx-auto rounded-3xl shadow-lg">
+      </div>
+    </section>
+
+    <!-- CARDÁPIO -->
+    <section id="cardapio"
+      class="border-t border-dashed border-softbeige w-full max-w-[700px] mx-auto mt-8 pt-12 pb-4 px-4 text-center">
+
+      <h2 class="text-4xl font-semibold text-center mb-6 text-coffee">Nosso Cardápio</h2>
+
+      <!-- Menu Categorias -->
+      <nav id="nav-categorias" class="overflow-x-auto whitespace-nowrap snap-x flex gap-3 mt-6 pb-1">
+        <div class="animate-pulse flex gap-3">
+          <div class="h-9 w-24 bg-softbeige rounded-full"></div>
+          <div class="h-9 w-24 bg-softbeige rounded-full"></div>
+          <div class="h-9 w-24 bg-softbeige rounded-full"></div>
+        </div>
+      </nav>
+
+      <!-- Produtos -->
+      <div id="produtos-container" class="mt-8">
+        <div id="categoria-titulo" class="text-left text-darkcoffee font-extrabold text-[22px] mb-4">
+          Carregando...
+        </div>
+        <div id="lista-produtos" class="grid grid-cols-2 gap-4">
+          <!-- Injetado via JS -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer id="footer" class="bg-darkcoffee text-cream text-center py-12 px-6 mt-16">
+    <h3 class="text-3xl font-semibold mb-4">Bacio di Latte</h3>
+    <p>Rua das Flores, 500</p>
+    <p>WhatsApp: (15) 98765-4321</p>
+    <p>Aberto das 12h às 22h</p>
+  </footer>
+
+  <a id="whatsApp" href="https://wa.me/5515987654321" class="fixed bottom-6 right-6 z-50">
+    <img src="/img/WPP.webp" class="w-14 hover:scale-110 transition">
+  </a>
+
+  <!-- MODAL DE DETALHES DO PRODUTO -->
+  <div id="detalhes-modal"
+    class="fixed inset-0 bg-black/70 z-[80] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-cream w-full max-w-[400px] rounded-[30px] overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col"
+      id="detalhes-modal-content">
+
+      <!-- Botão Fechar -->
+      <button onclick="fecharModalDetalhes()"
+        class="absolute top-4 right-4 bg-softbeige text-darkcoffee w-10 h-10 rounded-full flex justify-center items-center font-bold text-2xl shadow-sm z-10 hover:text-caramel active:scale-90 transition-all">&times;</button>
+
+      <!-- Imagem -->
+      <div class="w-full h-[260px] bg-softbeige flex justify-center items-center p-8 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-softbeige to-cream opacity-60"></div>
+        <img id="detalhes-img" src="" alt="Produto"
+          class="w-full h-full object-contain drop-shadow-xl relative z-10 transition-transform duration-500 hover:scale-105">
+      </div>
+
+      <!-- Infos -->
+      <div class="p-6">
+        <h2 id="detalhes-nome" class="text-3xl font-bold text-darkcoffee mb-1 leading-tight">Nome do Produto</h2>
+        <p id="detalhes-preco" class="text-2xl font-bold text-caramel mb-4">R$ 0,00</p>
+        <div class="bg-softbeige rounded-xl p-4 mb-6">
+          <p id="detalhes-desc" class="text-coffee text-sm leading-relaxed">Descrição do produto...</p>
+        </div>
+
+        <button id="detalhes-btn-add"
+          class="w-full bg-caramel text-white py-4 rounded-full text-lg font-semibold shadow-md hover:bg-coffee active:scale-[0.98] transition-all flex justify-center items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+            stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Adicionar ao Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ CARRINHO FIXO -->
+  <div id="carrinho-footer"
+    class="fixed bottom-0 left-0 w-full bg-coffee text-cream p-4 z-50 shadow-[0_-4px_6px_rgba(0,0,0,0.15)] transform translate-y-full transition-transform duration-300 flex justify-between items-center cursor-pointer"
+    onclick="abrirModalCarrinho()">
+    <div>
+      <p class="text-sm font-medium opacity-80">Resumo do Pedido</p>
+      <p class="text-xl font-bold">Total: <span id="carrinho-total">R$ 0,00</span></p>
+    </div>
+    <button class="bg-caramel text-white px-4 py-2 rounded-full font-semibold shadow-md active:scale-95 transition-all">
+      Ver Carrinho
+    </button>
+  </div>
+
+  <!-- MODAL DO CARRINHO -->
+  <div id="carrinho-modal"
+    class="fixed inset-0 bg-black/60 z-[60] flex flex-col justify-end sm:justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-cream w-full sm:w-[500px] h-[85vh] sm:h-auto sm:max-h-[85vh] rounded-t-3xl sm:rounded-2xl flex flex-col transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-300"
+      id="carrinho-modal-content">
+
+      <!-- Cabeçalho -->
+      <div class="p-5 border-b border-softbeige flex justify-between items-center bg-softbeige rounded-t-3xl sm:rounded-t-2xl">
+        <h2 class="text-2xl font-bold text-darkcoffee">Seu Carrinho</h2>
+        <button onclick="fecharModalCarrinho()"
+          class="text-3xl font-bold text-coffee hover:text-caramel focus:outline-none">&times;</button>
+      </div>
+
+      <!-- Itens -->
+      <div id="carrinho-itens-container" class="p-5 flex-1 overflow-y-auto flex flex-col gap-4"></div>
+
+      <!-- Rodapé -->
+      <div class="p-5 border-t border-softbeige bg-softbeige rounded-b-3xl sm:rounded-b-2xl">
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-lg font-bold text-darkcoffee">Total do Pedido:</span>
+          <span id="modal-carrinho-total" class="text-2xl font-bold text-caramel">R$ 0,00</span>
+        </div>
+        <button onclick="fecharPedido()" id="btn-fechar-pedido"
+          class="w-full bg-caramel text-white py-3 rounded-full text-lg font-semibold shadow-lg hover:bg-coffee active:scale-95 transition-all">
+          Fechar Pedido (Usar GPS)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── MENU MOBILE ───────────────────────────────────────────────────────────
+    const menuBtn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    const linhas = document.querySelectorAll('#menu-btn .linha');
+    let menuAberto = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuAberto = !menuAberto;
+      menu.classList.toggle('hidden');
+      if (menuAberto) {
+        linhas[0].classList.add('rotate-45', 'translate-y-1.5');
+        linhas[1].classList.add('opacity-0');
+        linhas[2].classList.add('-rotate-45', '-translate-y-1.5');
+      } else {
+        linhas[0].classList.remove('rotate-45', 'translate-y-1.5');
+        linhas[1].classList.remove('opacity-0');
+        linhas[2].classList.remove('-rotate-45', '-translate-y-1.5');
+      }
+    });
+
+    document.querySelectorAll('#menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          menu.classList.add('hidden');
+          menuAberto = false;
+          linhas[0].classList.remove('rotate-45', 'translate-y-1.5');
+          linhas[1].classList.remove('opacity-0');
+          linhas[2].classList.remove('-rotate-45', '-translate-y-1.5');
+        }
+      });
+    });
+
+    // ─── API E CARDÁPIO ────────────────────────────────────────────────────────
+    const API_URL = 'https://aula-24.vercel.app/api';
+    const navCategorias = document.getElementById('nav-categorias');
+    const listaProdutos = document.getElementById('lista-produtos');
+    const categoriaTitulo = document.getElementById('categoria-titulo');
+    
+    let categoriasData = [];
+    let categoriaAtivaId = null;
+    
+
+    async function carregarCategorias() {
+      try {
+        const response = await fetch(`${API_URL}/categorias`);
+        categoriasData = await response.json();
+        renderizarBotoesCategorias();
+        if (categoriasData.length > 0) {
+          selecionarCategoria(categoriasData[0].id, categoriasData[0].nome);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar categorias:', error);
+        navCategorias.innerHTML = '<p class="text-caramel">Erro ao carregar menu.</p>';
+      }
+    }
+
+    function renderizarBotoesCategorias() {
+      navCategorias.innerHTML = '';
+      categoriasData.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'snap-start px-6 py-2 rounded-full font-semibold text-sm transition-all duration-150 cursor-pointer flex-shrink-0 btn-cat';
+        btn.innerText = cat.nome;
+        btn.onclick = () => selecionarCategoria(cat.id, cat.nome);
+        btn.dataset.id = cat.id;
+        navCategorias.appendChild(btn);
+      });
+    }
+
+    async function selecionarCategoria(id, nome) {
+      categoriaAtivaId = id;
+      categoriaTitulo.innerText = nome;
+      document.querySelectorAll('.btn-cat').forEach(btn => {
+        if (parseInt(btn.dataset.id) === id) {
+          btn.classList.add('bg-coffee', 'text-white');
+          btn.classList.remove('bg-softbeige', 'text-darkcoffee');
+        } else {
+          btn.classList.remove('bg-coffee', 'text-white');
+          btn.classList.add('bg-softbeige', 'text-darkcoffee');
+        }
+      });
+      carregarProdutos(id);
+    }
+
+    async function carregarProdutos(categoriaId) {
+      listaProdutos.innerHTML = `
+        <div class="col-span-2 py-10 flex justify-center">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-caramel"></div>
+        </div>`;
+      try {
+        const response = await fetch(`${API_URL}/produtos?categoriaId=${categoriaId}`);
+        const produtos = await response.json();
+        renderizarProdutos(produtos);
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+        listaProdutos.innerHTML = '<p class="col-span-2 text-coffee py-10">Erro ao carregar produtos.</p>';
+      }
+    }
+
+    function renderizarProdutos(produtos) {
+      listaProdutos.innerHTML = '';
+      if (produtos.length === 0) {
+        listaProdutos.innerHTML = '<p class="col-span-2 text-coffee py-10">Nenhum produto nesta categoria.</p>';
+        return;
+      }
+      produtos.forEach(p => {
+        const precoFormatado = p.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const imgSource = (p.imagem && p.imagem.startsWith('http'))
+          ? p.imagem
+          : `./assets/images/${p.imagem || 'logo.png'}`;
+
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-[20px] p-3 shadow-sm border border-softbeige relative flex flex-col hover:shadow-md transition-shadow group';
+        card.innerHTML = `
+          <div class="absolute inset-0 z-0 cursor-pointer rounded-[20px]"
+            onclick="abrirModalDetalhes('${p.nome}', ${p.preco}, '${p.descricao || ''}', '${imgSource}', '${p.id}')">
+          </div>
+          <img src="${imgSource}" alt="${p.nome}"
+            class="w-full h-24 object-contain mb-2 mt-2 transition-transform duration-300 drop-shadow-sm group-hover:scale-105 pointer-events-none relative z-10"
+            onerror="this.src='./assets/images/logo.png'">
+          <div class="text-left w-full mt-auto relative z-10 pointer-events-none">
+            <h4 class="font-semibold text-darkcoffee text-sm leading-tight">${p.nome}</h4>
+            <p class="text-caramel font-bold text-sm mt-1">${precoFormatado}</p>
+          </div>
+          <button onclick="adicionarItem('${p.id}', '${p.nome}', ${p.preco})"
+            class="w-full bg-caramel text-white py-2 rounded-full text-xs font-semibold mt-3 shadow-md hover:bg-coffee active:scale-95 transition-all z-10 relative">
+            Adicionar
+          </button>`;
+        listaProdutos.appendChild(card);
+      });
+    }
+
+    carregarCategorias();
+
+    // ─── MODAL DETALHES ────────────────────────────────────────────────────────
+    const modalDetalhes = document.getElementById('detalhes-modal');
+    const modalDetalhesContent = document.getElementById('detalhes-modal-content');
+
+    function abrirModalDetalhes(nome, preco, desc, img, id) {
+      if (navigator.vibrate) navigator.vibrate(40);
+      document.getElementById('detalhes-nome').innerText = nome;
+      document.getElementById('detalhes-preco').innerText = preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      document.getElementById('detalhes-desc').innerText = desc;
+      document.getElementById('detalhes-img').src = img;
+      document.getElementById('detalhes-btn-add').onclick = function () {
+        adicionarItem(id, nome, preco);
+        fecharModalDetalhes();
+      };
+      modalDetalhes.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        modalDetalhesContent.classList.remove('scale-95');
+        modalDetalhesContent.classList.add('scale-100');
+      }, 10);
+    }
+
+    function fecharModalDetalhes() {
+      modalDetalhesContent.classList.remove('scale-100');
+      modalDetalhesContent.classList.add('scale-95');
+      setTimeout(() => modalDetalhes.classList.add('opacity-0', 'pointer-events-none'), 300);
+    }
+
+    modalDetalhes.addEventListener('click', e => {
+      if (e.target === modalDetalhes) fecharModalDetalhes();
+    });
+
+    // ─── CARRINHO ──────────────────────────────────────────────────────────────
+    let carrinho = [];
+    const carrinhoFooter = document.getElementById('carrinho-footer');
+    const carrinhoTotalSpan = document.getElementById('carrinho-total');
+    const modal = document.getElementById('carrinho-modal');
+    const modalContent = document.getElementById('carrinho-modal-content');
+    const itensContainer = document.getElementById('carrinho-itens-container');
+    const modalTotalSpan = document.getElementById('modal-carrinho-total');
+
+    function inicializarCarrinho() {
+      const salvo = localStorage.getItem('gelato_carrinho');
+      if (salvo) {
+        carrinho = JSON.parse(salvo);
+        atualizarInterfaceCart();
+      }
+    }
+
+    function adicionarItem(id, nome, preco) {
+      if (navigator.vibrate) navigator.vibrate(200);
+      const index = carrinho.findIndex(item => item.id === id);
+      if (index !== -1) {
+        carrinho[index].quantidade += 1;
+      } else {
+        carrinho.push({ id, nome, preco: parseFloat(preco), quantidade: 1 });
+      }
+      atualizarCarrinho();
+    }
+
+    function abrirModalCarrinho() {
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        modalContent.classList.remove('translate-y-full', 'scale-95');
+      }, 10);
+    }
+
+    function fecharModalCarrinho() {
+      modalContent.classList.add('translate-y-full', 'scale-95');
+      setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+    }
+
+    function aumentarQuantidade(id) {
+      const index = carrinho.findIndex(item => item.id === id);
+      if (index !== -1) {
+        carrinho[index].quantidade += 1;
+        atualizarCarrinho();
+        if (navigator.vibrate) navigator.vibrate(50);
+      }
+    }
+
+    function diminuirQuantidade(id) {
+      const index = carrinho.findIndex(item => item.id === id);
+      if (index !== -1) {
+        if (carrinho[index].quantidade > 1) {
+          carrinho[index].quantidade -= 1;
+        } else {
+          carrinho.splice(index, 1);
+          if (carrinho.length === 0) fecharModalCarrinho();
+        }
+        atualizarCarrinho();
+        if (navigator.vibrate) navigator.vibrate(50);
+      }
+    }
+
+    function atualizarCarrinho() {
+      localStorage.setItem('gelato_carrinho', JSON.stringify(carrinho));
+      atualizarInterfaceCart();
+    }
+
+    function atualizarInterfaceCart() {
+      if (carrinho.length === 0) {
+        carrinhoFooter.classList.add('translate-y-full');
+        return;
+      }
+      const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+      const totalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      carrinhoTotalSpan.innerText = totalFormatado;
+      modalTotalSpan.innerText = totalFormatado;
+      carrinhoFooter.classList.remove('translate-y-full');
+      renderizarItensModal();
+    }
+
+    function renderizarItensModal() {
+      if (!itensContainer) return;
+      itensContainer.innerHTML = '';
+      carrinho.forEach(item => {
+        const subTotal = (item.preco * item.quantidade).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const precoUnit = item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const div = document.createElement('div');
+        div.className = 'flex justify-between items-center border-b border-softbeige pb-4 mt-2';
+        div.innerHTML = `
+          <div class="flex-1">
+            <h4 class="font-bold text-lg text-darkcoffee">${item.nome}</h4>
+            <p class="text-sm text-coffee/70">${precoUnit}</p>
+            <p class="font-bold text-caramel mt-1">${subTotal}</p>
+          </div>
+          <div class="flex items-center gap-3 bg-softbeige p-2 rounded-xl">
+            <button onclick="diminuirQuantidade('${item.id}')"
+              class="w-8 h-8 flex justify-center items-center bg-white rounded-lg font-bold text-xl shadow-sm hover:text-caramel active:scale-95 transition-all">-</button>
+            <span class="font-bold text-lg w-4 text-center">${item.quantidade}</span>
+            <button onclick="aumentarQuantidade('${item.id}')"
+              class="w-8 h-8 flex justify-center items-center bg-white rounded-lg font-bold text-xl shadow-sm hover:text-caramel active:scale-95 transition-all">+</button>
+          </div>`;
+        itensContainer.appendChild(div);
+      });
+    }
+
+    function fecharPedido() {
+      const btnPedido = document.getElementById('btn-fechar-pedido');
+      if (!btnPedido) return;
+      const btnOriginalText = btnPedido.innerText;
+
+      if (navigator.geolocation) {
+        btnPedido.innerText = 'Buscando localização...';
+        navigator.geolocation.getCurrentPosition(
+          (posicao) => {
+            const lat = posicao.coords.latitude;
+            const lng = posicao.coords.longitude;
+            btnPedido.innerText = btnOriginalText;
+            alert(`Pedido Fechado com Sucesso!\nSua Localização: ${lat.toFixed(4)}, ${lng.toFixed(4)}\nObrigado pela preferência!`);
+            carrinho = [];
+            fecharModalCarrinho();
+            atualizarCarrinho();
+          },
+          (erro) => {
+            btnPedido.innerText = btnOriginalText;
+            console.error(erro);
+            alert('Não foi possível obter sua localização. Pedido confirmado mesmo assim!');
+            carrinho = [];
+            fecharModalCarrinho();
+            atualizarCarrinho();
+          }
+        );
+      } else {
+        alert('Pedido Fechado com Sucesso!\n(Navegador sem suporte GPS)');
+        carrinho = [];
+        fecharModalCarrinho();
+        atualizarCarrinho();
+      }
+    }
+
+    inicializarCarrinho();
+
+    if('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker Registrado no Porto! 🍨', reg))
+                .catch(err => console.error('Erro ao preparar a massa: ', err));
+            });
+        }
+  </script>
+
+</body>
+</html>
