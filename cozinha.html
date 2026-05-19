@@ -1,475 +1,511 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cozinha — Bacio di Latte</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" defer></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Baccio Di Latte - Pedidos</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FONTES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            cream:    '#f5ede0',
-            latte:    '#e8d5ba',
-            caramel:  '#b07d4a',
+            cream: '#f5ede0',
+            latte: '#e8d5ba',
+            caramel: '#b07d4a',
             espresso: '#6b4226',
-            mocha:    '#3e2010',
-            blush:    '#f0e0cc',
-            sage:     '#a89880',
+            mocha: '#3e2010',
+            blush: '#f0e0cc',
+            sage: '#a89880'
           },
+
           fontFamily: {
-            display: ['"Cormorant Garamond"', 'serif'],
-            sans:    ['Jost', 'sans-serif'],
-          },
+            titulo: ['Cormorant Garamond', 'serif'],
+            corpo: ['Jost', 'sans-serif']
+          }
         }
       }
     }
   </script>
+
   <style>
-    :root {
-      --cream:    #f5ede0;
-      --latte:    #e8d5ba;
-      --caramel:  #b07d4a;
-      --espresso: #6b4226;
-      --mocha:    #3e2010;
-      --blush:    #f0e0cc;
+
+    body{
+      background:#f5ede0;
+      font-family:'Jost',sans-serif;
+      min-height:100vh;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* textura */
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
 
-    body {
-      background: var(--cream);
-      font-family: 'Jost', sans-serif;
-      min-height: 100vh;
-    }
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 
-    /* Subtle grain texture */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
+      pointer-events:none;
+      z-index:0;
     }
 
-    /* Header */
-    .header {
-      background: white;
-      border-bottom: 1px solid var(--latte);
-      position: sticky;
-      top: 0;
-      z-index: 50;
+    header{
+      background:white;
+      border-bottom:1px solid #e8d5ba;
+      backdrop-filter:blur(10px);
     }
 
-    /* Status dot */
-    .status-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #c0392b;
-      box-shadow: 0 0 0 3px rgba(192,57,43,.18);
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-    .status-dot.online {
-      background: #27ae60;
-      box-shadow: 0 0 0 3px rgba(39,174,96,.18);
-    }
-    @keyframes pulse-dot {
-      0%,100% { transform: scale(1); opacity:1; }
-      50%      { transform: scale(1.3); opacity:.7; }
+    /* cards */
+    .pedido-card{
+      background:white;
+      border:1px solid #e8d5ba;
+      transition:.25s;
     }
 
-    /* Cards de pedido */
-    .order-card {
-      background: white;
-      border: 1px solid var(--latte);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: transform .25s ease, box-shadow .25s ease;
-      animation: slide-up .4s ease both;
-    }
-    .order-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(107,66,38,.10);
+    .pedido-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 12px 30px rgba(107,66,38,.10);
     }
 
-    @keyframes slide-up {
-      from { opacity:0; transform: translateY(18px); }
-      to   { opacity:1; transform: translateY(0); }
+    /* botão principal */
+    .btn-primary{
+      background:#b07d4a;
+      color:white;
+      transition:.2s;
     }
 
-    /* Badge status */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-    .badge-new      { background: #fef3e2; color: #b07d4a; border: 1px solid #e8d5ba; }
-    .badge-making   { background: #fff8e1; color: #e67e22; border: 1px solid #fad29a; }
-    .badge-ready    { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
-
-    /* Item row */
-    .item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--latte);
-    }
-    .item-row:last-child { border-bottom: none; }
-
-    /* Action buttons */
-    .btn-primary {
-      background: var(--caramel);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-family: 'Jost', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background .2s, transform .15s;
-    }
-    .btn-primary:hover { background: var(--espresso); transform: scale(1.03); }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--caramel);
-      border: 1px solid var(--caramel);
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-family: 'Jost', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .btn-ghost:hover { background: var(--caramel); color: white; }
-
-    .btn-done {
-      background: #e8f5e9;
-      color: #2e7d32;
-      border: 1px solid #a5d6a7;
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-family: 'Jost', sans-serif;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .btn-done:hover { background: #c8e6c9; }
-
-    /* Empty state */
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 20px;
-      gap: 16px;
-      animation: fade-in .6s ease;
-    }
-    @keyframes fade-in {
-      from { opacity:0; } to { opacity:1; }
+    .btn-primary:hover{
+      background:#6b4226;
     }
 
-    /* Error banner */
-    .error-banner {
-      background: #fff0f0;
-      border: 1px solid #f5c6c6;
-      border-radius: 10px;
-      padding: 14px 18px;
-      color: #c0392b;
+    /* botão ghost */
+    .btn-ghost{
+      border:1px solid #b07d4a;
+      color:#b07d4a;
+      transition:.2s;
+      background:white;
     }
 
-    /* Counter badge */
-    .count-pill {
-      background: var(--caramel);
-      color: white;
-      border-radius: 20px;
-      padding: 3px 14px;
-      font-size: 13px;
-      font-weight: 500;
+    .btn-ghost:hover{
+      background:#b07d4a;
+      color:white;
     }
 
-    /* Timer indicator */
-    .timer-bar {
-      height: 3px;
-      background: var(--latte);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-    .timer-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--caramel), var(--espresso));
-      border-radius: 3px;
-      transition: width 1s linear;
+    /* scrollbar */
+    ::-webkit-scrollbar{
+      width:6px;
     }
 
-    /* Ornament divider */
-    .ornament {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--sage);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-    .ornament::before, .ornament::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--latte);
+    ::-webkit-scrollbar-track{
+      background:#f5ede0;
     }
 
-    /* Logo swirl */
-    .logo-swirl {
-      width: 32px; height: 32px;
-      fill: var(--caramel);
+    ::-webkit-scrollbar-thumb{
+      background:#e8d5ba;
+      border-radius:10px;
     }
 
-    /* Refresh spin */
-    .spin { animation: spin .7s linear; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--cream); }
-    ::-webkit-scrollbar-thumb { background: var(--latte); border-radius: 3px; }
   </style>
 </head>
-<body class="relative">
+
+<body class="bg-cream font-corpo relative">
 
   <!-- HEADER -->
-  <header class="header px-5 py-3">
-    <div class="max-w-4xl mx-auto flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <svg class="logo-swirl" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 4 C28 4, 36 10, 36 20 C36 30, 28 36, 20 36 C14 36, 9 32, 8 26 C7 20, 11 16, 16 16 C20 16, 23 19, 23 23 C23 27, 20 30, 16 30" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-          <circle cx="20" cy="20" r="2.5" fill="var(--caramel)"/>
-        </svg>
-        <div>
-          <p class="font-display text-espresso leading-none tracking-wide" style="font-size:18px; font-weight:600;">Bacio di Latte</p>
-          <p class="font-sans text-sage leading-none" style="font-size:9px; letter-spacing:.18em; text-transform:uppercase;">Gelato Puro — Cozinha</p>
-        </div>
-      </div>
+  <header class="fixed top-0 left-0 w-full bg-white border-b border-latte px-8 py-4 flex items-center justify-between z-50">
 
-      <!-- Status + Atualizar -->
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2">
-          <div class="status-dot" id="statusDot"></div>
-          <span class="font-sans text-xs text-sage tracking-widest uppercase" id="statusLabel">Offline</span>
+    <!-- ESQUERDA -->
+    <div class="flex items-center gap-4">
+
+      <img 
+        src="img/logo.webp" 
+        alt="Logo Gelateria"
+        class="w-14 h-14 object-contain rounded-xl"
+      />
+
+      <div>
+        <h1 class="text-3xl font-titulo text-mocha tracking-wide">
+          Baccio Di Latte
+        </h1>
+
+        <!-- STATUS -->
+        <div class="flex items-center gap-2 mt-1">
+          <span id="statusDot" class="w-2 h-2 rounded-full bg-red-400"></span>
+
+          <span id="statusText" class="text-sm text-sage uppercase tracking-widest">
+            Offline
+          </span>
         </div>
-        <button onclick="handleRefresh()" class="btn-primary flex items-center gap-2" style="padding:7px 14px;">
-          <i class="fa-solid fa-arrows-rotate text-xs" id="refreshIcon"></i>
-          <span>Atualizar</span>
-        </button>
       </div>
+    </div>
+
+    <!-- DIREITA -->
+    <div class="flex gap-3">
+
+      <button onclick="toggleStatus()"
+        id="statusBtn"
+        class="btn-ghost px-5 py-2 rounded-full text-sm uppercase tracking-wider">
+        Ficar Online
+      </button>
+
+      <button onclick="carregarPedidos()"
+        class="btn-primary px-5 py-2 rounded-full text-sm uppercase tracking-wider">
+        Atualizar
+      </button>
+
     </div>
   </header>
 
-  <!-- MAIN -->
-  <main class="max-w-4xl mx-auto px-4 py-8 relative z-10">
 
-    <!-- Título da seção -->
-    <div class="flex items-center justify-between mb-6">
+  <!-- CONTEÚDO -->
+  <div class="px-8 pb-10 mt-28 relative z-10">
+
+    <div class="flex justify-between items-center mb-6">
+
       <div>
-        <h1 class="font-display text-mocha" style="font-size:32px; font-weight:600; letter-spacing:-.01em;">Pedidos Recebidos</h1>
-        <div class="ornament mt-2" style="max-width:260px;">preparação em andamento</div>
+        <h3 class="text-4xl font-titulo text-mocha">
+          Pedidos Recebidos
+        </h3>
+
+        <p class="text-sage uppercase tracking-[0.2em] text-xs mt-2">
+          preparação em andamento
+        </p>
       </div>
-      <span class="count-pill" id="countPill">0 pedidos</span>
+
+      <span id="contador"
+        class="bg-caramel text-white px-4 py-1 rounded-full text-sm tracking-wide">
+        0 pedidos
+      </span>
     </div>
 
-    <!-- Error banner (oculto por padrão) -->
-    <div class="error-banner mb-6 hidden" id="errorBanner">
-      <p class="font-sans font-medium text-sm mb-1">Ops!</p>
-      <p class="font-sans text-sm" style="opacity:.85;" id="errorMsg">Não foi possível carregar os pedidos da nuvem. Verifique a conexão com a API.</p>
+    <!-- LISTA -->
+    <div id="pedidosContainer"
+      class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     </div>
 
-    <!-- Lista de pedidos -->
-    <div id="orderList" class="flex flex-col gap-4"></div>
-
-    <!-- Estado vazio -->
-    <div class="empty-state hidden" id="emptyState">
-      <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="36" cy="36" r="35" stroke="#e8d5ba" stroke-width="1.5"/>
-        <path d="M24 48 C24 36, 30 28, 36 26 C42 28, 48 36, 48 48" stroke="#b07d4a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <ellipse cx="36" cy="25" rx="6" ry="8" stroke="#b07d4a" stroke-width="1.5" fill="none"/>
-        <path d="M33 32 Q36 36 39 32" stroke="#b07d4a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      </svg>
-      <p class="font-display text-espresso text-2xl" style="font-weight:400; font-style:italic;">Nenhum pedido ainda</p>
-      <p class="font-sans text-sage text-sm tracking-wider">Os pedidos aparecerão aqui assim que chegarem</p>
-    </div>
-
-  </main>
+  </div>
 
   <script>
-    // ─── Estado da aplicação ───────────────────────────────────────────────
-    let orders = [];
-    let isOnline = true;
-    let timers  = {};   // { orderId: { seconds, interval } }
+
+    // =========================
+    // URL DA API
+    // =========================
+    const URL_API = "https://aula-24.vercel.app/api/pedidos";
 
 
+    // =========================
+    // RENDERIZAR PEDIDOS
+    // =========================
+    function renderPedidos(pedidos) {
 
-    // ─── Utilitários ───────────────────────────────────────────────────────
-    function timeAgo(date) {
-      const diff = Math.floor((Date.now() - date) / 1000);
-      if (diff < 60) return `${diff}s atrás`;
-      if (diff < 3600) return `${Math.floor(diff/60)}min atrás`;
-      return `${Math.floor(diff/3600)}h atrás`;
-    }
+      const container = document.getElementById("pedidosContainer");
+      const contador = document.getElementById("contador");
 
-    function statusLabel(s) {
-      return { new:'Novo', making:'Preparando', ready:'Pronto' }[s] || s;
-    }
-    function statusClass(s) {
-      return { new:'badge-new', making:'badge-making', ready:'badge-done badge-ready' }[s] || 'badge-new';
-    }
+      container.innerHTML = "";
 
-    // ─── Render ────────────────────────────────────────────────────────────
-    function renderOrders() {
-      const list = document.getElementById('orderList');
-      const empty = document.getElementById('emptyState');
-      const pill  = document.getElementById('countPill');
+      // SEM PEDIDOS
+      if (pedidos.length === 0) {
 
-      const active = orders.filter(o => o.status !== 'done');
-      pill.textContent = `${active.length} pedido${active.length !== 1 ? 's' : ''}`;
+        container.innerHTML = `
+          <div class="col-span-full bg-white border border-latte 
+                      text-espresso px-6 py-6 rounded-2xl shadow-sm text-center">
 
-      if (active.length === 0) {
-        list.innerHTML = '';
-        empty.classList.remove('hidden');
+            <p class="font-titulo text-3xl mb-2">
+              Nenhum pedido
+            </p>
+
+            <p class="text-sage text-sm uppercase tracking-widest">
+              os pedidos aparecerão aqui
+            </p>
+
+          </div>
+        `;
+
+        contador.innerText = "0 pedidos";
         return;
       }
-      empty.classList.add('hidden');
 
-      list.innerHTML = active.map((o, idx) => `
-        <div class="order-card" style="animation-delay:${idx * 0.07}s" id="card-${o.id}">
-          <!-- Header do card -->
-          <div class="px-5 py-4 flex items-start justify-between" style="border-bottom:1px solid var(--latte);">
+      // CONTADOR
+      contador.innerText = pedidos.length + " pedidos";
+
+      // LOOP DOS PEDIDOS
+      pedidos.forEach(pedido => {
+
+        // TENTA CONVERTER ITENS
+        let itens = [];
+
+        try {
+
+          itens = typeof pedido.itens === "string"
+            ? JSON.parse(pedido.itens)
+            : pedido.itens;
+
+        } catch (e) {
+          console.error("Erro ao converter itens:", e);
+        }
+
+        if (!Array.isArray(itens)) {
+          itens = [];
+        }
+
+        // HTML DOS ITENS
+        let htmlItens = itens.map(item => `
+          <li class="flex justify-between border-b border-latte py-2 text-sm">
+
+            <span class="text-gray-700">
+              ${item.quantidade || 1}x ${item.nome || "Produto"}
+            </span>
+
+            <span class="font-medium text-espresso">
+              R$ ${(item.preco || 0).toFixed(2)}
+            </span>
+
+          </li>
+        `).join("");
+
+        // DATA FORMATADA
+        let dataFormatada = "Sem data";
+
+        if (pedido.created_at) {
+
+          const data = new Date(pedido.created_at);
+
+          dataFormatada =
+            data.toLocaleTimeString("pt-BR", {
+              hour: "2-digit",
+              minute: "2-digit"
+            }) +
+            " • " +
+            data.toLocaleDateString("pt-BR");
+        }
+
+        // CARD
+        const card = document.createElement("div");
+
+        card.className = `
+          pedido-card
+          rounded-2xl
+          p-5
+          flex
+          flex-col
+        `;
+
+        card.innerHTML = `
+
+          <!-- TOPO -->
+          <div class="flex justify-between items-start mb-3">
+
             <div>
-              <div class="flex items-center gap-3 mb-1">
-                <span class="font-display text-espresso font-semibold" style="font-size:19px;">${o.id}</span>
-                <span class="badge ${statusClass(o.status)}">${statusLabel(o.status)}</span>
-              </div>
-              <p class="font-sans text-sage text-xs tracking-wider">${o.cliente} · ${timeAgo(o.hora)}</p>
-              <!-- mini timer bar -->
-              <div class="timer-bar" style="width:160px;">
-                <div class="timer-fill" id="tbar-${o.id}" style="width:${Math.min(100, Math.floor((Date.now()-o.hora)/600000*100))}%;"></div>
-              </div>
+
+              <h3 class="text-caramel font-semibold text-2xl font-titulo">
+                Pedido #${pedido.id}
+              </h3>
+
+              <p class="text-xs text-sage mt-1 tracking-wide">
+                ${dataFormatada}
+              </p>
+
             </div>
-            <span class="font-sans text-sage text-xs tracking-widest uppercase mt-1">${o.itens.length} iten${o.itens.length!==1?'s':''}</span>
+
+            <span class="bg-blush text-caramel text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+              ${pedido.status || "Pendente"}
+            </span>
+
           </div>
 
-          <!-- Itens -->
-          <div class="px-5 py-4">
-            ${o.itens.map(item => `
-              <div class="item-row">
-                <div class="flex items-center gap-3">
-                  <span class="font-sans text-xs text-white rounded-full flex items-center justify-center font-medium" style="background:var(--caramel);width:22px;height:22px;flex-shrink:0;">${item.qty}</span>
-                  <div>
-                    <p class="font-sans text-espresso text-sm font-medium">${item.nome}</p>
-                    ${item.obs ? `<p class="font-sans text-sage text-xs italic">obs: ${item.obs}</p>` : ''}
-                  </div>
-                </div>
-                <span class="font-sans text-sage text-xs tracking-wider">${item.tamanho}</span>
-              </div>
-            `).join('')}
+
+          <!-- CLIENTE -->
+          <div class="bg-blush rounded-xl p-4 mb-4 border border-latte">
+
+            <p class="text-sm text-gray-700">
+              <strong>Cliente:</strong>
+              ${pedido.cliente_nome || pedido.cliente || "Não informado"}
+            </p>
+
+            <p class="text-sm text-gray-700 mt-2">
+              <strong>Endereço:</strong>
+              ${pedido.cliente_endereco || "Não informado"}
+            </p>
+
           </div>
 
-          <!-- Ações -->
-          <div class="px-5 py-3 flex items-center justify-end gap-2" style="background:var(--blush);">
-            ${o.status === 'new' ? `
-              <button class="btn-ghost" onclick="setStatus('${o.id}','making')">Iniciar Preparo</button>
-              <button class="btn-primary" onclick="setStatus('${o.id}','ready')">Marcar Pronto</button>
-            ` : o.status === 'making' ? `
-              <button class="btn-primary" onclick="setStatus('${o.id}','ready')">Marcar Pronto</button>
-            ` : `
-              <button class="btn-done" onclick="setStatus('${o.id}','done')">Finalizar / Entregar</button>
-            `}
+
+          <!-- ITENS -->
+          <div class="flex-grow">
+
+            <h4 class="text-sm font-semibold text-espresso uppercase tracking-widest mb-3">
+              Itens do pedido
+            </h4>
+
+            <ul class="space-y-1">
+              ${htmlItens}
+            </ul>
+
           </div>
-        </div>
-      `).join('');
+
+
+          <!-- TOTAL -->
+          <div class="border-t border-latte mt-4 pt-4 flex justify-between items-center">
+
+            <div>
+
+              <p class="text-xs text-sage uppercase tracking-widest">
+                Total
+              </p>
+
+              <p class="text-2xl font-bold text-mocha font-titulo">
+                R$ ${(pedido.total || 0).toFixed(2)}
+              </p>
+
+            </div>
+
+            <button
+              onclick="concluirPedido(this)"
+              class="btn-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest">
+              Pronto ✓
+            </button>
+
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
     }
 
-    // ─── Mudar status ──────────────────────────────────────────────────────
-    function setStatus(id, newStatus) {
-      const o = orders.find(x => x.id === id);
-      if (!o) return;
-      o.status = newStatus;
-      renderOrders();
-      // TODO: PUT /api/pedidos/:id/status
-    }
 
-    // ─── Buscar pedidos ────────────────────────────────────────────────────
-    async function fetchOrders() {
+    // =========================
+    // CARREGAR PEDIDOS DA API
+    // =========================
+    async function carregarPedidos() {
+
       try {
-        // Integre sua API aqui:
-        // const res = await fetch('/api/pedidos');
-        // if (!res.ok) throw new Error('API indisponível');
-        // orders = await res.json();
-        setOnline(true);
-        hideError();
-        renderOrders();
-      } catch (err) {
-        setOnline(false);
-        showError('Não foi possível carregar os pedidos da nuvem. Verifique a conexão com a API.');
-        renderOrders();
+
+        // STATUS CARREGANDO
+        const dot = document.getElementById("statusDot");
+        const text = document.getElementById("statusText");
+
+        dot.classList.remove("bg-red-400");
+        dot.classList.add("bg-yellow-400");
+
+        text.innerText = "Atualizando...";
+
+        // FETCH API
+        const response = await fetch(URL_API);
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar pedidos");
+        }
+
+        const pedidos = await response.json();
+
+        renderPedidos(pedidos);
+
+        // STATUS ONLINE
+        dot.classList.remove("bg-yellow-400");
+        dot.classList.add("bg-green-400");
+
+        text.innerText = "Online";
+
+      } catch (erro) {
+
+        console.error("Erro ao carregar pedidos:", erro);
+
+        renderPedidos([]);
+
+        // STATUS OFFLINE
+        const dot = document.getElementById("statusDot");
+        const text = document.getElementById("statusText");
+
+        dot.classList.remove("bg-yellow-400");
+        dot.classList.add("bg-red-400");
+
+        text.innerText = "Offline";
       }
     }
 
-    // ─── Refresh com animação ──────────────────────────────────────────────
-    function handleRefresh() {
-      const icon = document.getElementById('refreshIcon');
-      icon.classList.add('spin');
-      setTimeout(() => icon.classList.remove('spin'), 700);
-      fetchOrders();
+
+    // =========================
+    // CONCLUIR PEDIDO
+    // =========================
+    function concluirPedido(btn) {
+
+      const card = btn.closest(".pedido-card");
+
+      card.classList.add(
+        "opacity-50",
+        "pointer-events-none"
+      );
+
+      btn.innerText = "Finalizado";
+
+      btn.classList.remove("btn-primary");
+
+      btn.classList.add(
+        "bg-green-100",
+        "text-green-700"
+      );
     }
 
-    // ─── Online / offline UI ───────────────────────────────────────────────
-    function setOnline(v) {
-      isOnline = v;
-      const dot   = document.getElementById('statusDot');
-      const label = document.getElementById('statusLabel');
-      dot.classList.toggle('online', v);
-      label.textContent = v ? 'Online' : 'Offline';
+
+    // =========================
+    // ONLINE / OFFLINE
+    // =========================
+    let online = false;
+
+    function toggleStatus() {
+
+      online = !online;
+
+      const dot = document.getElementById("statusDot");
+      const text = document.getElementById("statusText");
+      const btn = document.getElementById("statusBtn");
+
+      if (online) {
+
+        dot.classList.remove("bg-red-400");
+        dot.classList.add("bg-green-400");
+
+        text.innerText = "Online";
+
+        btn.innerText = "Ficar Offline";
+
+        btn.classList.remove("btn-ghost");
+
+        btn.classList.add("btn-primary");
+
+      } else {
+
+        dot.classList.remove("bg-green-400");
+        dot.classList.add("bg-red-400");
+
+        text.innerText = "Offline";
+
+        btn.innerText = "Ficar Online";
+
+        btn.classList.remove("btn-primary");
+
+        btn.classList.add("btn-ghost");
+      }
     }
 
-    function showError(msg) {
-      document.getElementById('errorMsg').textContent = msg;
-      document.getElementById('errorBanner').classList.remove('hidden');
-    }
-    function hideError() {
-      document.getElementById('errorBanner').classList.add('hidden');
-    }
 
-    // ─── Auto-refresh a cada 30s ───────────────────────────────────────────
-    fetchOrders();
-    setInterval(fetchOrders, 30000);
+    // =========================
+    // INICIAR
+    // =========================
+    window.onload = () => {
 
-    // ─── Atualizar relógio dos cards a cada minuto ─────────────────────────
-    setInterval(renderOrders, 60000);
+      carregarPedidos();
+
+      // Atualiza automaticamente
+      setInterval(carregarPedidos, 10000);
+    };
+
   </script>
+
 </body>
 </html>
