@@ -178,6 +178,11 @@
 
       <!-- Rodapé -->
       <div class="p-5 border-t border-softbeige bg-softbeige rounded-b-3xl sm:rounded-b-2xl">
+        <input type="text" id="cliente-nome" placeholder="Seu Nome Completo" 
+          class="w-full mb-3 p-3 border border-softbeige rounded-xl outline-none focus:border-caramel bg-white transition text-darkcoffee font-medium">
+        <input type="text" id="cliente-endereco" placeholder="Endereço de Entrega (Rua, Número, Bairro)" 
+          class="w-full mb-4 p-3 border border-softbeige rounded-xl outline-none focus:border-caramel bg-white transition text-darkcoffee font-medium">
+
         <div class="flex justify-between items-center mb-4">
           <span class="text-lg font-bold text-darkcoffee">Total do Pedido:</span>
           <span id="modal-carrinho-total" class="text-2xl font-bold text-caramel">R$ 0,00</span>
@@ -461,37 +466,96 @@
       });
     }
 
-    function fecharPedido() {
+    async function fecharPedido() {
+      if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+      }
+
+      const nome = document.getElementById('cliente-nome').value;
+      const endereco = document.getElementById('cliente-endereco').value;
+
+      if (!nome || !endereco) {
+        alert("Por favor, preencha seu nome e endereço de entrega!");
+        return;
+      }
+
       const btnPedido = document.getElementById('btn-fechar-pedido');
       if (!btnPedido) return;
       const btnOriginalText = btnPedido.innerText;
 
-      if (navigator.geolocation) {
-        btnPedido.innerText = 'Buscando localização...';
-        navigator.geolocation.getCurrentPosition(
-          (posicao) => {
-            const lat = posicao.coords.latitude;
-            const lng = posicao.coords.longitude;
-            btnPedido.innerText = btnOriginalText;
-            alert(`Pedido Fechado com Sucesso!\nSua Localização: ${lat.toFixed(4)}, ${lng.toFixed(4)}\nObrigado pela preferência!`);
-            carrinho = [];
-            fecharModalCarrinho();
-            atualizarCarrinho();
-          },
-          (erro) => {
-            btnPedido.innerText = btnOriginalText;
-            console.error(erro);
-            alert('Não foi possível obter sua localização. Pedido confirmado mesmo assim!');
-            carrinho = [];
-            fecharModalCarrinho();
-            atualizarCarrinho();
+      btnPedido.innerText = 'Enviando...';
+      btnPedido.disabled = true;
+      btnPedido.classList.add("opacity-50");
+
+      let enderecoFinal = endereco;
+
+      // Tenta obter a localização por GPS antes de enviar
+      const obterPosicao = () => {
+        return new Promise((resolve) => {
+          if (!navigator.geolocation) {
+            resolve(null);
+            return;
           }
-        );
-      } else {
-        alert('Pedido Fechado com Sucesso!\n(Navegador sem suporte GPS)');
+          navigator.geolocation.getCurrentPosition(
+            (posicao) => {
+              resolve({
+                lat: posicao.coords.latitude,
+                lng: posicao.coords.longitude
+              });
+            },
+            (erro) => {
+              console.error("Erro GPS:", erro);
+              resolve(null);
+            },
+            { timeout: 5000 }
+          );
+        });
+      };
+
+      btnPedido.innerText = 'Obtendo GPS...';
+      const gps = await obterPosicao();
+      if (gps) {
+        enderecoFinal += ` (GPS: ${gps.lat.toFixed(5)}, ${gps.lng.toFixed(5)})`;
+      }
+
+      btnPedido.innerText = 'Finalizando...';
+
+      const total = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+
+      const payloadPedido = {
+        cliente_nome: nome,
+        cliente_endereco: enderecoFinal,
+        itens: carrinho,
+        total: total
+      };
+
+      try {
+        const resposta = await fetch(`${API_URL}/pedidos`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payloadPedido)
+        });
+
+        if (!resposta.ok) throw new Error('Erro ao enviar pedido');
+
+        alert("Pedido enviado com sucesso para a cozinha!");
+        
+        // Limpar tudo
+        document.getElementById('cliente-nome').value = '';
+        document.getElementById('cliente-endereco').value = '';
         carrinho = [];
-        fecharModalCarrinho();
         atualizarCarrinho();
+        fecharModalCarrinho();
+      } catch (erro) {
+        console.error(erro);
+        alert("Ops! Ocorreu um problema ao enviar o pedido. Tente novamente.");
+      } finally {
+        btnPedido.innerText = btnOriginalText;
+        btnPedido.disabled = false;
+        btnPedido.classList.remove("opacity-50");
       }
     }
 
