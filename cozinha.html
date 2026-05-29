@@ -1,511 +1,832 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <title>Baccio Di Latte - Pedidos</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <!DOCTYPE html>
+  <html lang="pt-br">
 
-  <!-- FONTES -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baccio Di Latte - Painel de Controle</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            cream: '#f5ede0',
-            latte: '#e8d5ba',
-            caramel: '#b07d4a',
-            espresso: '#6b4226',
-            mocha: '#3e2010',
-            blush: '#f0e0cc',
-            sage: '#a89880'
-          },
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
 
-          fontFamily: {
-            titulo: ['Cormorant Garamond', 'serif'],
-            corpo: ['Jost', 'sans-serif']
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cream: '#f5ede0',
+              latte: '#e8d5ba',
+              caramel: '#b07d4a',
+              espresso: '#6b4226',
+              mocha: '#3e2010',
+              blush: '#f0e0cc',
+              sage: '#a89880',
+              dark: '#222222',
+              muted: '#999999',
+              footer: '#333333'
+            },
+            fontFamily: {
+              titulo: ['Cormorant Garamond', 'serif'],
+              corpo: ['Jost', 'sans-serif']
+            }
           }
         }
       }
-    }
-  </script>
+    </script>
 
-  <style>
+    <style>
+      body {
+        background: #f5ede0;
+        font-family: 'Jost', sans-serif;
+        min-height: 100vh;
+      }
 
-    body{
-      background:#f5ede0;
-      font-family:'Jost',sans-serif;
-      min-height:100vh;
-    }
+      /* textura fina de fundo */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    /* textura */
-    body::before{
-      content:'';
-      position:fixed;
-      inset:0;
+      /* cards */
+      .pedido-card {
+        background: white;
+        border: 1px solid #e8d5ba;
+        transition: .25s;
+      }
 
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      .pedido-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(107, 66, 38, .10);
+      }
 
-      pointer-events:none;
-      z-index:0;
-    }
+      /* botões customizados */
+      .btn-primary {
+        background: #b07d4a;
+        color: white;
+        transition: .2s;
+      }
 
-    header{
-      background:white;
-      border-bottom:1px solid #e8d5ba;
-      backdrop-filter:blur(10px);
-    }
+      .btn-primary:hover {
+        background: #6b4226;
+      }
 
-    /* cards */
-    .pedido-card{
-      background:white;
-      border:1px solid #e8d5ba;
-      transition:.25s;
-    }
+      .btn-ghost {
+        border: 1px solid #b07d4a;
+        color: #b07d4a;
+        transition: .2s;
+        background: white;
+      }
 
-    .pedido-card:hover{
-      transform:translateY(-4px);
-      box-shadow:0 12px 30px rgba(107,66,38,.10);
-    }
+      .btn-ghost:hover {
+        background: #b07d4a;
+        color: white;
+      }
 
-    /* botão principal */
-    .btn-primary{
-      background:#b07d4a;
-      color:white;
-      transition:.2s;
-    }
+      /* scrollbar elegante */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
 
-    .btn-primary:hover{
-      background:#6b4226;
-    }
+      ::-webkit-scrollbar-track {
+        background: #f5ede0;
+      }
 
-    /* botão ghost */
-    .btn-ghost{
-      border:1px solid #b07d4a;
-      color:#b07d4a;
-      transition:.2s;
-      background:white;
-    }
+      ::-webkit-scrollbar-thumb {
+        background: #e8d5ba;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
 
-    .btn-ghost:hover{
-      background:#b07d4a;
-      color:white;
-    }
+<body class="bg-cream font-corpo relative w-full m-0 min-h-screen flex flex-col">
 
-    /* scrollbar */
-    ::-webkit-scrollbar{
-      width:6px;
-    }
-
-    ::-webkit-scrollbar-track{
-      background:#f5ede0;
-    }
-
-    ::-webkit-scrollbar-thumb{
-      background:#e8d5ba;
-      border-radius:10px;
-    }
-
-  </style>
-</head>
-
-<body class="bg-cream font-corpo relative">
-
-  <!-- HEADER -->
-  <header class="fixed top-0 left-0 w-full bg-white border-b border-latte px-8 py-4 flex items-center justify-between z-50">
-
-    <!-- ESQUERDA -->
+  <header
+    class="fixed top-0 left-0 w-full bg-white/90 border-b border-latte px-8 py-4 flex items-center justify-between z-50 backdrop-blur-md shadow-sm">
     <div class="flex items-center gap-4">
-
-      <img 
-        src="img/logo.webp" 
-        alt="Logo Gelateria"
-        class="w-14 h-14 object-contain rounded-xl"
-      />
-
+      <img src="img/logo.webp" onerror="this.src='https://placehold.co/64x64?text=Baccio'; this.onerror=null;"
+        alt="Baccio Di Latte" class="w-14 h-14 object-contain rounded-xl" />
       <div>
-        <h1 class="text-3xl font-titulo text-mocha tracking-wide">
-          Baccio Di Latte
-        </h1>
-
-        <!-- STATUS -->
-        <div class="flex items-center gap-2 mt-1">
+        <h1 class="text-3xl font-titulo text-mocha tracking-wide font-medium">Baccio Di Latte</h1>
+        <div class="flex items-center gap-2 mt-0.5">
           <span id="statusDot" class="w-2 h-2 rounded-full bg-red-400"></span>
-
-          <span id="statusText" class="text-sm text-sage uppercase tracking-widest">
-            Offline
-          </span>
+          <span id="statusText" class="text-xs text-sage uppercase tracking-widest font-semibold">Offline</span>
         </div>
       </div>
+      <h1
+        class="text-xl font-titulo text-espresso hidden md:block border-l border-latte pl-4 ml-2 tracking-widest uppercase text-sm">
+        Painel Gestor</h1>
     </div>
 
-    <!-- DIREITA -->
     <div class="flex gap-3">
-
-      <button onclick="toggleStatus()"
-        id="statusBtn"
-        class="btn-ghost px-5 py-2 rounded-full text-sm uppercase tracking-wider">
+      <button onclick="toggleStatus()" id="statusBtn"
+        class="btn-ghost px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold active:scale-95 transition-transform">
         Ficar Online
       </button>
-
-      <button onclick="carregarPedidos()"
-        class="btn-primary px-5 py-2 rounded-full text-sm uppercase tracking-wider">
+      <button onclick="atualizarPainel()"
+        class="btn-primary px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold active:scale-95 transition-transform">
         Atualizar
       </button>
-
     </div>
   </header>
 
+  <div
+    class="flex justify-center border-b border-latte bg-white shadow-sm overflow-x-auto whitespace-nowrap mt-24 relative z-20">
+    <div class="flex gap-8 max-w-7xl w-full px-8">
+      <button id="tab-pedidos" onclick="switchTab('pedidos')"
+        class="py-4 border-b-2 border-caramel text-caramel font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300">
+        Pedidos Recebidos
+      </button>
+      <button id="tab-produtos" onclick="switchTab('produtos')"
+        class="py-4 border-b-2 border-transparent text-sage hover:text-mocha font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300">
+        Gerenciar Sabores (Produtos)
+      </button>
+      <button id="tab-categorias" onclick="switchTab('categorias')"
+        class="py-4 border-b-2 border-transparent text-sage hover:text-mocha font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300">
+        Gerenciar Linhas (Categorias)
+      </button>
+    </div>
+  </div>
 
-  <!-- CONTEÚDO -->
-  <div class="px-8 pb-10 mt-28 relative z-10">
+  <main class="flex-grow p-8 relative z-10">
+    <div class="max-w-7xl mx-auto">
 
-    <div class="flex justify-between items-center mb-6">
+      <div id="secao-pedidos">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h3 class="text-4xl font-titulo text-mocha">Pedidos Solicitados</h3>
+            <p class="text-sage uppercase tracking-[0.2em] text-xs mt-1">preparação artesanal em andamento</p>
+          </div>
+          <span id="contador" class="bg-caramel text-white px-4 py-1 rounded-full text-sm tracking-wide">0
+            pedidos</span>
+        </div>
 
-      <div>
-        <h3 class="text-4xl font-titulo text-mocha">
-          Pedidos Recebidos
-        </h3>
+        <div id="pedidosContainer" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <p class="text-sage col-span-full text-center py-10 uppercase tracking-wider text-sm">Fique online para
+            sincronizar os pedidos da gelateria...</p>
+        </div>
 
-        <p class="text-sage uppercase tracking-[0.2em] text-xs mt-2">
-          preparação em andamento
-        </p>
+        <div class="mt-14 border-t border-dashed border-latte pt-8">
+          <div class="flex items-center gap-2 mb-6">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <h3 class="text-2xl font-titulo text-mocha uppercase tracking-wider">Gelatos Finalizados</h3>
+          </div>
+          <div id="pedidosFinalizadosContainer" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <p class="text-sage col-span-full text-center py-6 text-sm italic opacity-60">Nenhum gelato finalizado nesta
+              janela de trabalho.</p>
+          </div>
+        </div>
       </div>
 
-      <span id="contador"
-        class="bg-caramel text-white px-4 py-1 rounded-full text-sm tracking-wide">
-        0 pedidos
-      </span>
-    </div>
+      <div id="secao-produtos" class="hidden">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h3 class="text-4xl font-titulo text-mocha">Vitrine de Sabores e Produtos</h3>
+            <p class="text-sage text-sm mt-1">Adicione, edite valores ou atualize as descrições dos produtos.</p>
+          </div>
+          <button onclick="abrirModalProduto()"
+            class="btn-primary px-5 py-3 rounded-full text-xs uppercase tracking-wider font-semibold shadow flex items-center justify-center gap-2 self-start sm:self-auto">
+            + Novo Gelato / Item
+          </button>
+        </div>
 
-    <!-- LISTA -->
-    <div id="pedidosContainer"
-      class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    </div>
+        <div id="produtos-container-cozinha" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+          <p class="text-sage col-span-full text-center py-10">Conectando ao banco de sabores...</p>
+        </div>
+      </div>
 
+      <div id="secao-categorias" class="hidden">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+          <div>
+            <h3 class="text-4xl font-titulo text-mocha">Linhas e Categorias</h3>
+            <p class="text-sage text-sm mt-1">Gerencie as divisões principais (Ex: Gelatos Gelato, Milkshakes, Doces).
+            </p>
+          </div>
+          <button onclick="abrirModalCategoria()"
+            class="btn-primary px-5 py-3 rounded-full text-xs uppercase tracking-wider font-semibold shadow flex items-center justify-center gap-2 self-start sm:self-auto">
+            + Nova Linha / Categoria
+          </button>
+        </div>
+
+        <div id="categorias-container-cozinha" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+          <p class="text-sage col-span-full text-center py-10">Carregando grupos estruturais...</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="text-center p-8 bg-white border-t border-latte mt-12 relative z-10">
+    <h3 class="font-titulo text-xl text-mocha tracking-wide">Baccio Di Latte — Painel de Monitoramento</h3>
+    <p class="my-1 text-sage text-xs uppercase tracking-widest">Conexão segura dedicada à administração e área de
+      preparo • 1995</p>
+  </footer>
+
+  <div id="produto-modal"
+    class="fixed inset-0 bg-mocha/60 z-[80] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4 backdrop-blur-sm">
+    <div
+      class="bg-white w-full max-w-[500px] rounded-[24px] border border-latte overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col shadow-2xl"
+      id="produto-modal-content">
+      <div class="p-6 border-b border-latte flex justify-between items-center bg-cream/30">
+        <h3 id="modal-produto-titulo" class="text-2xl font-titulo text-mocha font-semibold">Cadastrar Item na Vitrine
+        </h3>
+        <button onclick="fecharModalProduto()"
+          class="text-sage hover:text-mocha text-3xl font-light transition">&times;</button>
+      </div>
+      <form id="produto-form" onsubmit="salvarProduto(event)" class="p-6 flex flex-col gap-4">
+        <input type="hidden" id="prod-id">
+        <div>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Nome do Produto
+            *</label>
+          <input type="text" id="prod-nome" required placeholder="Ex: Gelato Bacio di Latte"
+            class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-cream/10 transition">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Categoria/Linha
+              *</label>
+            <select id="prod-categoria" required
+              class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-white transition">
+              <option value="">Aguardando...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Preço Sugerido (R$)
+              *</label>
+            <input type="number" id="prod-preco" required step="0.01" min="0" placeholder="24.50"
+              class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-cream/10 transition">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Caminho da Imagem ou
+            Endereço URL</label>
+          <input type="text" id="prod-imagem" placeholder="Ex: bacio-gelato.png"
+            class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-cream/10 transition">
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Notas de Sabor /
+            Descrição</label>
+          <textarea id="prod-desc" rows="3"
+            placeholder="À base de leite, creme de leite e o mais puro toque italiano..."
+            class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-cream/10 transition resize-none"></textarea>
+        </div>
+        <div class="mt-4 flex gap-3">
+          <button type="button" onclick="fecharModalProduto()"
+            class="flex-1 py-3 border border-latte text-espresso rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-cream/40 transition">Cancelar</button>
+          <button type="submit" id="btn-salvar-produto"
+            class="flex-1 py-3 btn-primary text-white rounded-full text-xs uppercase tracking-wider font-semibold shadow">Confirmar
+            Salvamento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="categoria-modal"
+    class="fixed inset-0 bg-mocha/60 z-[80] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4 backdrop-blur-sm">
+    <div
+      class="bg-white w-full max-w-[400px] rounded-[24px] border border-latte overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col shadow-2xl"
+      id="categoria-modal-content">
+      <div class="p-6 border-b border-latte flex justify-between items-center bg-cream/30">
+        <h3 id="modal-categoria-titulo" class="text-2xl font-titulo text-mocha font-semibold">Nova Linha de Produtos
+        </h3>
+        <button onclick="fecharModalCategoria()"
+          class="text-sage hover:text-mocha text-3xl font-light transition">&times;</button>
+      </div>
+      <form id="categoria-form" onsubmit="salvarCategoria(event)" class="p-6 flex flex-col gap-4">
+        <input type="hidden" id="cat-id">
+        <div>
+          <label class="block text-xs uppercase tracking-wider font-semibold text-espresso mb-1">Nome da Linha /
+            Categoria *</label>
+          <input type="text" id="cat-nome" required placeholder="Ex: Gelatos Especiais, Cafés"
+            class="w-full p-3 border border-latte rounded-xl outline-none focus:border-caramel bg-cream/10 transition">
+        </div>
+        <div class="mt-4 flex gap-3">
+          <button type="button" onclick="fecharModalCategoria()"
+            class="flex-1 py-3 border border-latte text-espresso rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-cream/40 transition">Voltar</button>
+          <button type="submit" id="btn-salvar-categoria"
+            class="flex-1 py-3 btn-primary text-white rounded-full text-xs uppercase tracking-wider font-semibold shadow">Gravar
+            Categoria</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirm-delete-modal"
+    class="fixed inset-0 bg-mocha/70 z-[90] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4 backdrop-blur-sm">
+    <div
+      class="bg-white w-full max-w-[400px] rounded-[24px] border border-latte overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col p-6 shadow-2xl"
+      id="confirm-delete-content">
+      <div class="flex flex-col items-center text-center">
+        <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 mb-3">⚠️</div>
+        <h3 class="text-2xl font-titulo text-mocha font-semibold mb-1">Remover Sabores?</h3>
+        <p class="text-sage text-sm mb-6">Confirma a exclusão definitiva do item <strong id="delete-prod-nome"
+            class="text-mocha"></strong>?</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="fecharModalDelete()"
+          class="flex-1 py-3 border border-latte text-espresso rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-cream/30 transition">Manter
+          Item</button>
+        <button id="btn-confirmar-excluir"
+          class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full text-xs uppercase tracking-wider font-semibold shadow transition">Remover
+          de Vez</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirm-delete-cat-modal"
+    class="fixed inset-0 bg-mocha/70 z-[90] flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 px-4 backdrop-blur-sm">
+    <div
+      class="bg-white w-full max-w-[400px] rounded-[24px] border border-latte overflow-hidden transform scale-95 transition-transform duration-300 relative flex flex-col p-6 shadow-2xl"
+      id="confirm-delete-cat-content">
+      <div class="flex flex-col items-center text-center">
+        <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-red-600 mb-3">⚠️</div>
+        <h3 class="text-2xl font-titulo text-mocha font-semibold mb-1">Remover Grupo?</h3>
+        <p class="text-sage text-sm mb-6">Tem certeza que deseja apagar a linha <strong id="delete-cat-nome"
+            class="text-mocha"></strong> do sistema?</p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="fecharModalDeleteCat()"
+          class="flex-1 py-3 border border-latte text-espresso rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-cream/30 transition">Manter
+          Linha</button>
+        <button id="btn-confirmar-excluir-cat"
+          class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full text-xs uppercase tracking-wider font-semibold shadow transition">Excluir
+          Grupo</button>
+      </div>
+    </div>
   </div>
 
   <script>
+    const API_URL = "https://aula-24.vercel.app/api";
+    const URL_PEDIDOS = `${API_URL}/pedidos`;
+    const URL_PRODUTOS = `${API_URL}/produtos`;
+    const URL_CATEGORIAS = `${API_URL}/categorias`;
 
-    // =========================
-    // URL DA API
-    // =========================
-    const URL_API = "https://aula-24.vercel.app/api/pedidos";
+    let activeTab = 'pedidos';
+    let estaOnline = false;
+    let categoriasData = [];
+    let produtosData = [];
+    let productToDeleteId = null;
+    let categoryToDeleteId = null;
 
+    // CONTROLE DE FLUXO DE ABAS INTERNAS
+    function switchTab(tab) {
+      activeTab = tab;
+      const tabPedidos = document.getElementById('tab-pedidos');
+      const tabProdutos = document.getElementById('tab-produtos');
+      const tabCategorias = document.getElementById('tab-categorias');
+      const secaoPedidos = document.getElementById('secao-pedidos');
+      const secaoProdutos = document.getElementById('secao-produtos');
+      const secaoCategorias = document.getElementById('secao-categorias');
 
-    // =========================
-    // RENDERIZAR PEDIDOS
-    // =========================
-    function renderPedidos(pedidos) {
-
-      const container = document.getElementById("pedidosContainer");
-      const contador = document.getElementById("contador");
-
-      container.innerHTML = "";
-
-      // SEM PEDIDOS
-      if (pedidos.length === 0) {
-
-        container.innerHTML = `
-          <div class="col-span-full bg-white border border-latte 
-                      text-espresso px-6 py-6 rounded-2xl shadow-sm text-center">
-
-            <p class="font-titulo text-3xl mb-2">
-              Nenhum pedido
-            </p>
-
-            <p class="text-sage text-sm uppercase tracking-widest">
-              os pedidos aparecerão aqui
-            </p>
-
-          </div>
-        `;
-
-        contador.innerText = "0 pedidos";
-        return;
-      }
-
-      // CONTADOR
-      contador.innerText = pedidos.length + " pedidos";
-
-      // LOOP DOS PEDIDOS
-      pedidos.forEach(pedido => {
-
-        // TENTA CONVERTER ITENS
-        let itens = [];
-
-        try {
-
-          itens = typeof pedido.itens === "string"
-            ? JSON.parse(pedido.itens)
-            : pedido.itens;
-
-        } catch (e) {
-          console.error("Erro ao converter itens:", e);
-        }
-
-        if (!Array.isArray(itens)) {
-          itens = [];
-        }
-
-        // HTML DOS ITENS
-        let htmlItens = itens.map(item => `
-          <li class="flex justify-between border-b border-latte py-2 text-sm">
-
-            <span class="text-gray-700">
-              ${item.quantidade || 1}x ${item.nome || "Produto"}
-            </span>
-
-            <span class="font-medium text-espresso">
-              R$ ${(item.preco || 0).toFixed(2)}
-            </span>
-
-          </li>
-        `).join("");
-
-        // DATA FORMATADA
-        let dataFormatada = "Sem data";
-
-        if (pedido.created_at) {
-
-          const data = new Date(pedido.created_at);
-
-          dataFormatada =
-            data.toLocaleTimeString("pt-BR", {
-              hour: "2-digit",
-              minute: "2-digit"
-            }) +
-            " • " +
-            data.toLocaleDateString("pt-BR");
-        }
-
-        // CARD
-        const card = document.createElement("div");
-
-        card.className = `
-          pedido-card
-          rounded-2xl
-          p-5
-          flex
-          flex-col
-        `;
-
-        card.innerHTML = `
-
-          <!-- TOPO -->
-          <div class="flex justify-between items-start mb-3">
-
-            <div>
-
-              <h3 class="text-caramel font-semibold text-2xl font-titulo">
-                Pedido #${pedido.id}
-              </h3>
-
-              <p class="text-xs text-sage mt-1 tracking-wide">
-                ${dataFormatada}
-              </p>
-
-            </div>
-
-            <span class="bg-blush text-caramel text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-              ${pedido.status || "Pendente"}
-            </span>
-
-          </div>
-
-
-          <!-- CLIENTE -->
-          <div class="bg-blush rounded-xl p-4 mb-4 border border-latte">
-
-            <p class="text-sm text-gray-700">
-              <strong>Cliente:</strong>
-              ${pedido.cliente_nome || pedido.cliente || "Não informado"}
-            </p>
-
-            <p class="text-sm text-gray-700 mt-2">
-              <strong>Endereço:</strong>
-              ${pedido.cliente_endereco || "Não informado"}
-            </p>
-
-          </div>
-
-
-          <!-- ITENS -->
-          <div class="flex-grow">
-
-            <h4 class="text-sm font-semibold text-espresso uppercase tracking-widest mb-3">
-              Itens do pedido
-            </h4>
-
-            <ul class="space-y-1">
-              ${htmlItens}
-            </ul>
-
-          </div>
-
-
-          <!-- TOTAL -->
-          <div class="border-t border-latte mt-4 pt-4 flex justify-between items-center">
-
-            <div>
-
-              <p class="text-xs text-sage uppercase tracking-widest">
-                Total
-              </p>
-
-              <p class="text-2xl font-bold text-mocha font-titulo">
-                R$ ${(pedido.total || 0).toFixed(2)}
-              </p>
-
-            </div>
-
-            <button
-              onclick="concluirPedido(this)"
-              class="btn-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest">
-              Pronto ✓
-            </button>
-
-          </div>
-        `;
-
-        container.appendChild(card);
+      [tabPedidos, tabProdutos, tabCategorias].forEach(btn => {
+        btn.className = "py-4 border-b-2 border-transparent text-sage hover:text-mocha font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300";
       });
-    }
+      [secaoPedidos, secaoProdutos, secaoCategorias].forEach(sec => sec.classList.add('hidden'));
 
-
-    // =========================
-    // CARREGAR PEDIDOS DA API
-    // =========================
-    async function carregarPedidos() {
-
-      try {
-
-        // STATUS CARREGANDO
-        const dot = document.getElementById("statusDot");
-        const text = document.getElementById("statusText");
-
-        dot.classList.remove("bg-red-400");
-        dot.classList.add("bg-yellow-400");
-
-        text.innerText = "Atualizando...";
-
-        // FETCH API
-        const response = await fetch(URL_API);
-
-        if (!response.ok) {
-          throw new Error("Erro ao buscar pedidos");
-        }
-
-        const pedidos = await response.json();
-
-        renderPedidos(pedidos);
-
-        // STATUS ONLINE
-        dot.classList.remove("bg-yellow-400");
-        dot.classList.add("bg-green-400");
-
-        text.innerText = "Online";
-
-      } catch (erro) {
-
-        console.error("Erro ao carregar pedidos:", erro);
-
-        renderPedidos([]);
-
-        // STATUS OFFLINE
-        const dot = document.getElementById("statusDot");
-        const text = document.getElementById("statusText");
-
-        dot.classList.remove("bg-yellow-400");
-        dot.classList.add("bg-red-400");
-
-        text.innerText = "Offline";
+      if (tab === 'pedidos') {
+        tabPedidos.className = "py-4 border-b-2 border-caramel text-caramel font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300";
+        secaoPedidos.classList.remove('hidden');
+        carregarPedidos();
+      } else if (tab === 'produtos') {
+        tabProdutos.className = "py-4 border-b-2 border-caramel text-caramel font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300";
+        secaoProdutos.classList.remove('hidden');
+        carregarProdutosCozinha();
+      } else if (tab === 'categorias') {
+        tabCategorias.className = "py-4 border-b-2 border-caramel text-caramel font-semibold font-titulo text-xl flex items-center gap-2 transition duration-300";
+        secaoCategorias.classList.remove('hidden');
+        carregarCategoriasCozinha();
       }
     }
 
-
-    // =========================
-    // CONCLUIR PEDIDO
-    // =========================
-    function concluirPedido(btn) {
-
-      const card = btn.closest(".pedido-card");
-
-      card.classList.add(
-        "opacity-50",
-        "pointer-events-none"
-      );
-
-      btn.innerText = "Finalizado";
-
-      btn.classList.remove("btn-primary");
-
-      btn.classList.add(
-        "bg-green-100",
-        "text-green-700"
-      );
+    function atualizarPainel() {
+      if (activeTab === 'pedidos') carregarPedidos();
+      else if (activeTab === 'produtos') carregarProdutosCozinha();
+      else if (activeTab === 'categorias') carregarCategoriasCozinha();
     }
 
-
-    // =========================
-    // ONLINE / OFFLINE
-    // =========================
-    let online = false;
-
-    function toggleStatus() {
-
-      online = !online;
-
+    // ALTERNADOR E GERENCIADOR DE NETWORK LOCAL
+    function atualizarStatusVisual(tipo = "offline") {
       const dot = document.getElementById("statusDot");
       const text = document.getElementById("statusText");
       const btn = document.getElementById("statusBtn");
 
-      if (online) {
-
-        dot.classList.remove("bg-red-400");
-        dot.classList.add("bg-green-400");
-
+      if (tipo === "online") {
+        dot.className = "w-2 h-2 rounded-full bg-green-400 animate-pulse";
         text.innerText = "Online";
-
         btn.innerText = "Ficar Offline";
-
-        btn.classList.remove("btn-ghost");
-
-        btn.classList.add("btn-primary");
-
+        btn.className = "btn-primary px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold active:scale-95 transition-transform";
+      } else if (tipo === "carregando") {
+        dot.className = "w-2 h-2 rounded-full bg-yellow-400 animate-pulse";
+        text.innerText = "Atualizando...";
       } else {
-
-        dot.classList.remove("bg-green-400");
-        dot.classList.add("bg-red-400");
-
+        dot.className = "w-2 h-2 rounded-full bg-red-400";
         text.innerText = "Offline";
-
         btn.innerText = "Ficar Online";
-
-        btn.classList.remove("btn-primary");
-
-        btn.classList.add("btn-ghost");
+        btn.className = "btn-ghost px-5 py-2 rounded-full text-xs uppercase tracking-wider font-semibold active:scale-95 transition-transform";
       }
     }
 
+    function toggleStatus() {
+      estaOnline = !estaOnline;
+      if (estaOnline) {
+        atualizarStatusVisual("online");
+        atualizarPainel();
+      } else {
+        atualizarStatusVisual("offline");
+        document.getElementById("pedidosContainer").innerHTML = '<p class="text-sage col-span-full text-center py-10 uppercase tracking-wider text-sm">Fique online para sincronizar os pedidos da gelateria...</p>';
+        document.getElementById("pedidosFinalizadosContainer").innerHTML = '<p class="text-sage col-span-full text-center py-6 text-sm italic opacity-60">Nenhum gelato finalizado nesta janela de trabalho.</p>';
+        document.getElementById('contador').innerText = "0 pedidos";
+      }
+    }
 
-    // =========================
-    // INICIAR
-    // =========================
-    window.onload = () => {
+    // LÓGICA DE GERENCIAMENTO DE ENTRADA DE PEDIDOS (CACHE EM MEMÓRIA LOCAL DE INTERFACE)
+    async function carregarPedidos() {
+      if (!estaOnline && activeTab === 'pedidos') return;
 
+      const containerAtivos = document.getElementById('pedidosContainer');
+      const containerConcluidos = document.getElementById('pedidosFinalizadosContainer');
+      const contador = document.getElementById('contador');
+
+      try {
+        atualizarStatusVisual("carregando");
+        const res = await fetch(URL_PEDIDOS);
+        if (!res.ok) throw new Error();
+
+        const pedidos = await res.json();
+        const sessionConcluidos = JSON.parse(localStorage.getItem('baccio_concluidos') || '[]');
+
+        const pendentes = pedidos.filter(p => !sessionConcluidos.includes(p.id) && p.status !== 'Finalizado' && p.status !== 'Concluído');
+        const finalizados = pedidos.filter(p => sessionConcluidos.includes(p.id) || p.status === 'Finalizado' || p.status === 'Concluído');
+
+        containerAtivos.innerHTML = '';
+        containerConcluidos.innerHTML = '';
+
+        if (pendentes.length === 0) {
+          containerAtivos.innerHTML = `
+                        <div class="col-span-full bg-white border border-latte text-espresso px-6 py-12 rounded-2xl text-center shadow-sm">
+                            <p class="font-titulo text-3xl mb-1 text-mocha">Nenhum pedido na fila</p>
+                            <p class="text-sage text-xs uppercase tracking-widest">Os gelatos aparecerão assim que solicitados</p>
+                        </div>`;
+        } else {
+          pendentes.forEach(pedido => { containerAtivos.innerHTML += montarCardHtml(pedido, false); });
+        }
+
+        if (finalizados.length === 0) {
+          containerConcluidos.innerHTML = '<p class="text-sage col-span-full text-center py-10 text-sm italic opacity-50">Nenhum pedido finalizado recentemente.</p>';
+        } else {
+          finalizados.forEach(pedido => { containerConcluidos.innerHTML += montarCardHtml(pedido, true); });
+        }
+
+        contador.innerText = `${pendentes.length} pedido(s)`;
+        atualizarStatusVisual("online");
+
+      } catch (err) {
+        console.error(err);
+        containerAtivos.innerHTML = '<div class="col-span-full bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl text-center text-sm">Erro ao sincronizar dados com o servidor local.</div>';
+        atualizarStatusVisual("offline");
+      }
+    }
+
+    function montarCardHtml(pedido, isConcluido) {
+      let itens = [];
+      try { itens = typeof pedido.itens === 'string' ? JSON.parse(pedido.itens) : pedido.itens; } catch (e) { }
+      if (!Array.isArray(itens)) itens = [];
+
+      let itensHtml = itens.map(i => `
+                <li class="flex justify-between border-b border-latte py-2 text-sm">
+                    <span class="text-gray-700">${i.quantidade || 1}x ${i.nome || 'Produto'}</span>
+                    <span class="font-medium text-espresso">R$ ${(i.preco || 0).toFixed(2)}</span>
+                </li>`).join('');
+
+      let dataFormatada = 'Sem data';
+      if (pedido.created_at) {
+        const d = new Date(pedido.created_at);
+        dataFormatada = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + ' • ' + d.toLocaleDateString('pt-BR');
+      }
+
+      const badgeText = isConcluido ? 'Entregue' : (pedido.status || 'Pendente');
+      const badgeClass = isConcluido ? 'bg-green-100 text-green-800' : 'bg-blush text-caramel';
+      const actionButton = isConcluido ? `
+                <button onclick="restaurarPedido('${pedido.id}')" class="border border-latte text-espresso px-3 py-1.5 rounded-full text-xs uppercase font-semibold hover:bg-cream/40 transition">Reabrir ↩</button>
+            ` : `
+                <button onclick="concluirPedidoNoServidor('${pedido.id}')" class="btn-primary px-5 py-2 rounded-full text-xs uppercase tracking-widest font-semibold shadow">Pronto ✓</button>`;
+
+      return `
+                <div class="pedido-card rounded-2xl p-5 flex flex-col ${isConcluido ? 'opacity-70 hover:opacity-100' : ''}">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h3 class="text-caramel font-semibold text-2xl font-titulo">Pedido #${pedido.id}</h3>
+                            <p class="text-xs text-sage mt-0.5 tracking-wide">${dataFormatada}</p>
+                        </div>
+                        <span class="${badgeClass} text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold">${badgeText}</span>
+                    </div>
+                    <div class="bg-blush/40 rounded-xl p-4 mb-4 border border-latte/50 text-sm">
+                        <p class="text-gray-700"><strong>Cliente:</strong> ${pedido.cliente_nome || pedido.cliente || 'Não informado'}</p>
+                        <p class="text-gray-700 mt-1"><strong>Endereço:</strong> ${pedido.cliente_endereco || 'Não informado'}</p>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-sm font-semibold text-espresso uppercase tracking-widest mb-2">Composição:</h4>
+                        <ul class="space-y-0.5">${itensHtml}</ul>
+                    </div>
+                    <div class="border-t border-latte mt-4 pt-4 flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-sage uppercase tracking-widest">Total</p>
+                            <p class="text-2xl font-bold text-mocha font-titulo">R$ ${(pedido.total || 0).toFixed(2)}</p>
+                        </div>
+                        ${actionButton}
+                    </div>
+                </div>`;
+    }
+
+    async function concluirPedidoNoServidor(id) {
+      let cache = JSON.parse(localStorage.getItem('baccio_concluidos') || '[]');
+      if (!cache.includes(id)) cache.push(id);
+      localStorage.setItem('baccio_concluidos', JSON.stringify(cache));
+
+      try {
+        await fetch(`${URL_PEDIDOS}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Finalizado' })
+        });
+      } catch (e) { }
       carregarPedidos();
+    }
 
-      // Atualiza automaticamente
-      setInterval(carregarPedidos, 10000);
+    async function restaurarPedido(id) {
+      let cache = JSON.parse(localStorage.getItem('baccio_concluidos') || '[]');
+      cache = cache.filter(item => item !== id);
+      localStorage.setItem('baccio_concluidos', JSON.stringify(cache));
+
+      try {
+        await fetch(`${URL_PEDIDOS}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Pendente' })
+        });
+      } catch (e) { }
+      carregarPedidos();
+    }
+
+    // CRUD OPERACIONAL COMPLETO - PRODUTOS/SABORES
+    async function syncDropdownCategorias() {
+      try {
+        const res = await fetch(URL_CATEGORIAS);
+        categoriasData = await res.json();
+        const select = document.getElementById('prod-categoria');
+        select.innerHTML = '<option value="">Selecione a Linha</option>';
+        categoriasData.forEach(c => {
+          select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+        });
+      } catch (e) {
+        document.getElementById('prod-categoria').innerHTML = '<option value="">Erro estrutural</option>';
+      }
+    }
+
+    async function carregarProdutosCozinha() {
+      const container = document.getElementById('produtos-container-cozinha');
+      try {
+        container.innerHTML = '<p class="text-sage text-center col-span-full py-10 animate-pulse">Sincronizando cardápio de gelatos...</p>';
+        await syncDropdownCategorias();
+
+        const res = await fetch(URL_PRODUTOS);
+        produtosData = await res.json();
+
+        container.innerHTML = '';
+        if (produtosData.length === 0) {
+          container.innerHTML = '<p class="text-sage col-span-full text-center py-10">Vitrine vazia.</p>';
+          return;
+        }
+
+        produtosData.forEach(p => {
+          const cObj = categoriasData.find(cat => cat.id == p.categoria_id);
+          const labelLinha = cObj ? cObj.nome : 'Geral';
+          const srcImg = (p.imagem && p.imagem.startsWith('http')) ? p.imagem : 'https://placehold.co/300x200?text=Baccio';
+
+          container.innerHTML += `
+                        <div class="bg-white border border-latte shadow-sm rounded-2xl p-5 flex flex-col hover:shadow-md transition relative group">
+                            <div class="w-full h-40 bg-cream/20 flex justify-center items-center p-4 rounded-xl relative overflow-hidden mb-4">
+                                <img src="${srcImg}" onerror="this.src='https://placehold.co/300x200?text=Baccio';" alt="${p.nome}" class="max-h-full max-w-full object-contain transition duration-300 group-hover:scale-105">
+                                <span class="absolute top-2 left-2 bg-espresso text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded-full shadow-sm tracking-wider">${labelLinha}</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-lg text-mocha font-titulo">${p.nome}</h3>
+                                <p class="text-sage text-xs mt-1 line-clamp-2">${p.descricao || 'Nenhuma nota de sabor cadastrada.'}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-latte/50 flex justify-between items-center">
+                                <span class="text-xl font-bold text-caramel font-titulo">R$ ${parseFloat(p.preco).toFixed(2)}</span>
+                                <div class="flex gap-2">
+                                    <button onclick="editarProduto('${p.id}')" class="bg-cream/40 text-espresso p-2 rounded-lg hover:bg-cream transition text-sm">✏️</button>
+                                    <button onclick="abrirModalDelete('${p.id}', '${p.nome.replace(/'/g, "\\'")}')" class="bg-red-50 text-red-600 p-2 rounded-lg hover:bg-red-100 transition text-sm">🗑️</button>
+                                </div>
+                            </div>
+                        </div>`;
+        });
+      } catch (err) {
+        container.innerHTML = '<p class="text-red-500 col-span-full text-center py-10">Impossível sincronizar vitrine.</p>';
+      }
+    }
+
+    function abrirModalProduto() {
+      document.getElementById('produto-form').reset();
+      document.getElementById('prod-id').value = '';
+      document.getElementById('modal-produto-titulo').innerText = "Inserir Item na Vitrine";
+      document.getElementById('produto-modal').classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('produto-modal-content').classList.remove('scale-95');
+    }
+
+    function fecharModalProduto() {
+      document.getElementById('produto-modal').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('produto-modal-content').classList.add('scale-95');
+    }
+
+    async function salvarProduto(e) {
+      e.preventDefault();
+      const id = document.getElementById('prod-id').value;
+      const catVal = document.getElementById('prod-categoria').value;
+      const parsedCatId = isNaN(catVal) ? catVal : parseInt(catVal);
+      const payload = {
+        nome: document.getElementById('prod-nome').value,
+        categoria_id: parsedCatId,
+        preco: parseFloat(document.getElementById('prod-preco').value),
+        imagem: document.getElementById('prod-imagem').value,
+        descricao: document.getElementById('prod-desc').value
+      };
+
+      const btn = document.getElementById('btn-salvar-produto');
+      btn.innerText = "Sincronizando...";
+      btn.disabled = true;
+
+      try {
+        const url = id ? `${URL_PRODUTOS}/${id}` : URL_PRODUTOS;
+        const res = await fetch(url, {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detalhe || errData.mensagem || "Erro de validação ou segurança.");
+        }
+        fecharModalProduto();
+        carregarProdutosCozinha();
+      } catch (err) { alert("Falha na persistência: " + err.message); }
+      finally { btn.innerText = "Confirmar Salvamento"; btn.disabled = false; }
+    }
+
+    function editarProduto(id) {
+      const p = produtosData.find(item => item.id == id);
+      if (!p) return;
+      abrirModalProduto();
+      document.getElementById('modal-produto-titulo').innerText = "Reescrever Registro do Item";
+      document.getElementById('prod-id').value = p.id;
+      document.getElementById('prod-nome').value = p.nome;
+      document.getElementById('prod-categoria').value = p.categoria_id;
+      document.getElementById('prod-preco').value = p.preco;
+      document.getElementById('prod-imagem').value = p.imagem || '';
+      document.getElementById('prod-desc').value = p.descricao || '';
+    }
+
+    function abrirModalDelete(id, nome) {
+      productToDeleteId = id;
+      document.getElementById('delete-prod-nome').innerText = nome;
+      document.getElementById('confirm-delete-modal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function fecharModalDelete() {
+      document.getElementById('confirm-delete-modal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    document.getElementById('btn-confirmar-excluir').onclick = async () => {
+      try {
+        const res = await fetch(`${URL_PRODUTOS}/${productToDeleteId}`, { method: 'DELETE' });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detalhe || errData.mensagem || "Erro ao deletar.");
+        }
+        fecharModalDelete();
+        carregarProdutosCozinha();
+      } catch (err) { alert("Erro de exclusão: " + err.message); }
     };
 
-  </script>
+    // CRUD OPERACIONAL COMPLETO - LINHAS/CATEGORIAS
+    async function carregarCategoriasCozinha() {
+      const container = document.getElementById('categorias-container-cozinha');
+      try {
+        container.innerHTML = '<p class="text-sage text-center col-span-full py-10 animate-pulse">Carregando divisões da vitrine...</p>';
+        const res = await fetch(URL_CATEGORIAS);
+        categoriasData = await res.json();
 
+        container.innerHTML = '';
+        if (categoriasData.length === 0) {
+          container.innerHTML = '<p class="text-sage col-span-full text-center py-10">Nenhuma linha ativa.</p>';
+          return;
+        }
+
+        categoriasData.forEach(c => {
+          container.innerHTML += `
+                        <div class="bg-white border border-latte shadow-sm rounded-2xl p-5 flex justify-between items-center hover:shadow-md transition">
+                            <div>
+                                <h3 class="font-bold text-xl text-mocha font-titulo">${c.nome}</h3>
+                                <span class="text-xs text-sage font-medium tracking-wider">REGISTRO SISTEMA: #LINHA${c.id}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editarCategoria('${c.id}', '${c.nome.replace(/'/g, "\\'")}')" class="bg-cream/40 text-espresso p-2 rounded-lg hover:bg-cream transition text-sm">✏️</button>
+                                <button onclick="abrirModalDeleteCat('${c.id}', '${c.nome.replace(/'/g, "\\'")}')" class="bg-red-50 text-red-600 p-2 rounded-lg hover:bg-red-100 transition text-sm">🗑️</button>
+                            </div>
+                        </div>`;
+        });
+      } catch (err) { container.innerHTML = '<p class="text-red-500 col-span-full text-center py-10">Erro estrutural.</p>'; }
+    }
+
+    function abrirModalCategoria() {
+      document.getElementById('categoria-form').reset();
+      document.getElementById('cat-id').value = '';
+      document.getElementById('modal-categoria-titulo').innerText = "Adicionar Linha de Produtos";
+      document.getElementById('categoria-modal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function fecharModalCategoria() {
+      document.getElementById('categoria-modal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    async function salvarCategoria(e) {
+      e.preventDefault();
+      const id = document.getElementById('cat-id').value;
+      const payload = { nome: document.getElementById('cat-nome').value };
+      try {
+        const res = await fetch(id ? `${URL_CATEGORIAS}/${id}` : URL_CATEGORIAS, {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detalhe || errData.mensagem || "Erro ao salvar categoria.");
+        }
+        fecharModalCategoria();
+        carregarCategoriasCozinha();
+      } catch (err) { alert("Não foi possível salvar: " + err.message); }
+    }
+
+    function editarCategoria(id, nome) {
+      abrirModalCategoria();
+      document.getElementById('modal-categoria-titulo').innerText = "Alterar Nome da Linha";
+      document.getElementById('cat-id').value = id;
+      document.getElementById('cat-nome').value = nome;
+    }
+
+    function abrirModalDeleteCat(id, nome) {
+      categoryToDeleteId = id;
+      document.getElementById('delete-cat-nome').innerText = nome;
+      document.getElementById('confirm-delete-cat-modal').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function fecharModalDeleteCat() {
+      document.getElementById('confirm-delete-cat-modal').classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    document.getElementById('btn-confirmar-excluir-cat').onclick = async () => {
+      try {
+        const res = await fetch(`${URL_CATEGORIAS}/${categoryToDeleteId}`, { method: 'DELETE' });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detalhe || errData.mensagem || "Erro ao deletar categoria.");
+        }
+        fecharModalDeleteCat();
+        carregarCategoriasCozinha();
+      } catch (err) { alert("Erro de exclusão: " + err.message); }
+    };
+
+    // AUTO-SINCRONIZAÇÃO EM SEGUNDO PLANO (APENAS COM FLUXO ATIVO ONLINE)
+    setInterval(() => {
+      if (estaOnline && activeTab === 'pedidos') {
+        carregarPedidos();
+      }
+    }, 10000);
+
+    window.onload = () => {
+      estaOnline = true;
+      atualizarStatusVisual("online");
+      atualizarPainel();
+    };
+  </script>
 </body>
+
 </html>
